@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+    postgres:
+        container_name: goly-psql
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=test
+        image: postgres
+    
+    svelte:
+      depends_on:
+        - postgres
+      container_name: svelte-app
+      build: ./view
+      ports:
+        - 7321:7321
+      image: svelte-app
+
+    backend:
+      depends_on: 
+        - postgres
+      container_name: goly
+      build: ./app
+      ports:
+        - 3000:3000
+      image: goly
+
